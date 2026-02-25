@@ -2,117 +2,285 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sajeeb Saha Official</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Great+Vibes&family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --gold: #FFD700; --pink: #ff00ff; --dark-gold: #b8860b; }
-        body { margin: 0; padding: 0; background: #000; color: white; font-family: 'Montserrat', sans-serif; overflow-x: hidden; }
-
-        .animated-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%); z-index: -2; }
-        .pink-glow { position: fixed; bottom: -50px; left: 0; width: 100%; height: 400px; background: radial-gradient(circle, rgba(255, 0, 255, 0.3) 0%, transparent 70%); filter: blur(80px); z-index: -1; pointer-events: none; }
+        :root { 
+            --gold: #FFD700; 
+            --pink: #ff00ff; 
+            --dark-gold: #b8860b; 
+            --premium-black: #050505;
+            --pure-white: #ffffff;
+            --soft-white: rgba(255, 255, 255, 0.9);
+            --crystal: rgba(255, 255, 255, 0.15);
+        }
         
-        .page-border { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            border: 8px solid transparent; 
-            border-image: linear-gradient(45deg, var(--gold), #fff, var(--dark-gold), #fff, var(--gold)) 1; 
-            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.3);
-            pointer-events: none; z-index: 1000; 
+        body { 
+            margin: 0; padding: 0; 
+            background: var(--premium-black); 
+            color: white; 
+            font-family: 'Montserrat', sans-serif; 
+            overflow-x: hidden;
+            touch-action: manipulation;
         }
 
-        .container { padding: 60px 20px; max-width: 500px; margin: auto; text-align: center; }
-        .profile-name { font-family: 'Cinzel Decorative', cursive; font-size: 55px; font-weight: 900; background: linear-gradient(to bottom, #fff 20%, var(--gold) 50%, var(--dark-gold) 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 10px 20px rgba(255, 215, 0, 0.4); margin-bottom: 40px; letter-spacing: 2px; }
-
-        /* বাটন অ্যানিমেশন: সাদা আর পিঙ্ক গ্লো */
-        .btn-glow { 
-            display: block; padding: 22px; margin: 25px 0; border-radius: 50px; 
-            text-decoration: none; color: white; font-weight: 1000; font-size: 29px; 
-            background: #000; border: 2px solid rgba(255,255,255,0.2); 
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            position: relative; overflow: hidden; z-index: 1;
+        /* Hero Image - Zoom Animation */
+        .hero-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60vh;
+            z-index: -3;
+            overflow: hidden;
         }
 
-        .btn-glow::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), var(--pink), transparent);
-            transition: none;
-            animation: waveFlow 3s infinite linear;
+        .hero-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            animation: zoomInOut 20s ease-in-out infinite;
+        }
+
+        @keyframes zoomInOut {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 101%;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0) 0%, 
+                rgba(0,0,0,0.05) 50%, 
+                var(--premium-black) 98%
+            );
+        }
+
+        /* Floating Particles / Background Glow */
+        .animated-bg { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: radial-gradient(circle at center, rgba(26, 26, 46, 0.4) 0%, #000 100%); 
+            z-index: -2; 
+        }
+        
+        .white-glow { 
+            position: fixed; 
+            bottom: -50px; 
+            left: 0; 
+            width: 100%; 
+            height: 400px; 
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%); 
+            filter: blur(80px); 
+            z-index: -1; 
+            pointer-events: none;
+            animation: pulseGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .container { 
+            padding: 100px 20px 60px; 
+            max-width: 500px; 
+            margin: auto; 
+            text-align: center; 
+            position: relative; 
+            z-index: 10;
+        }
+        
+        /* Entrance Animations */
+        .fade-in {
+            animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        @keyframes fadeInTop {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-link {
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-name { 
+            font-family: 'Cinzel Decorative', cursive; 
+            font-size: 38px; 
+            font-weight: 900; 
+            background: linear-gradient(to bottom, #ffffff 10%, #f7f7f7 30%, var(--gold) 60%, var(--dark-gold) 90%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            text-shadow: 0 10px 35px rgba(255, 255, 255, 0.25); 
+            margin-bottom: 20px; 
+            letter-spacing: 2px;
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .content-group {
+            margin-top: 100px;
+            animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+        }
+
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-btn { 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            padding: 15px 10px; border-radius: 22px; 
+            text-decoration: none; color: white; font-weight: bold; 
+            background: rgba(255,255,255,0.07); 
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.3); 
+            transition: 0.4s; 
+            width: 35%; 
+            font-size: 13px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn:active {
+            transform: scale(0.9);
+        }
+
+        .social-btn:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); 
+            border-color: #ffffff; 
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .thank-you-bar { 
+            font-family: 'Montserrat', sans-serif; 
+            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C); 
+            background-size: 230% auto;
+            animation: shine 3s linear infinite, fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s both;
+            padding: 9px; border-radius: 99px; 
+            cursor: pointer; margin: 90px auto 0; 
+            font-weight: 800; font-size: 18px; 
+            width: 60%;
+            color: #222; 
+            box-shadow: 0 8px 25px rgba(184, 134, 11, 0.4);
+            transition: 0.4s;
+            display: block;
+            border: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .thank-you-bar:active { 
+            transform: scale(0.95); 
+        }
+
+        /* Particle effect for background */
+        #particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
             z-index: -1;
         }
-
-        @keyframes waveFlow {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .btn-glow:hover { 
-            transform: translateY(-15px) rotate(-3deg) scale(1.08); 
-            box-shadow: 0 0 30px #fff, 0 0 50px var(--pink);
-            border-color: var(--pink);
-        }
-
-        .social-btn { display: flex; align-items: center; justify-content: center; gap: 15px; padding: 18px; margin: 15px 0; border-radius: 15px; text-decoration: none; color: white; font-weight: bold; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); transition: 0.4s; }
-        .social-btn:hover { transform: translateY(-10px) rotate(3deg) scale(1.1); box-shadow: 0 0 30px var(--pink); border-color: var(--pink); }
-
-        .stay-text { margin: 60px 0; font-size: 55px; font-family: 'Great Vibes', cursive; text-shadow: 0 0 20px var(--pink); animation: float 3s ease-in-out infinite; }
-        @keyframes float { 0%, 100% {transform: translateY(0) rotate(-2deg);} 50% {transform: translateY(-25px) rotate(2deg);} }
-
-        .thank-you-bar { font-family: 'Montserrat', sans-serif; background: linear-gradient(45deg, #ff00ff, #00ffff); padding: 22px; border-radius: 50px; cursor: pointer; margin-top: 50px; font-weight: 800; font-size: 24px; border: none; width: 100%; color: white; }
-        .thank-you-bar:hover { transform: scale(1.1) rotate(-2deg); box-shadow: 0 0 60px var(--pink); }
-
-        .puja-item { position: fixed; top: -100px; color: rgba(255, 255, 255, 0.7); font-size: 30px; pointer-events: none; z-index: 1; filter: blur(2px); animation: slowFall linear infinite; }
-        @keyframes slowFall { to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="animated-bg"></div>
-<div class="pink-glow"></div>
-<div class="page-border"></div>
+<div id="particles"></div>
 
-<div class="container">
-    <div class="profile-name">Sajeeb Saha</div>
-    <a href="https://www.facebook.com/SAJEEBSAHA.MS" class="btn-glow">SAJEEB SAHA</a>
-    <h2 style="font-family: 'Cinzel'; color: #888; margin-top: 60px; font-size: 16px; letter-spacing: 5px;">Powered by Sajeeb Saha</h2>
-    <a href="https://www.facebook.com/share/1HL2L5KQGk/" class="social-btn"><i class="fab fa-facebook"></i> Honey Entertainment Follow</a>
-    <a href="https://www.tiktok.com/@honey_owner_sajeeb?is_from_webapp=1&sender_device=pc" class="social-btn"><i class="fab fa-tiktok"></i> Honey Entertainment Follow</a>
-    <div class="stay-text">Stay with me</div>
+<div class="hero-image-container">
+    <img src="https://i.pinimg.com/736x/4d/b4/c4/4db4c4778f38850b8a0740954155ddcf.jpg" alt="Sajeeb Saha Background">
+    <div class="hero-overlay"></div>
+</div>
+
+<div class="animated-bg"></div>
+<div class="white-glow"></div>
+
+<div class="container fade-in">
+    <a href="https://www.facebook.com/share/186na5ZYSo/" class="profile-link">
+        <div class="profile-name">Sajeeb</div>
+    </a>
+    
+    <div class="content-group">
+        <h2 style="font-family: 'Cinzel Decorative'; color: var(--pure-white); margin-top: 0; font-size: 10px; letter-spacing: 5px; opacity: 0.9;">POWERED BY SAJEEB SAHA</h2>
+        
+        <div class="social-container">
+            <a href="https://www.facebook.com/share/1CEQ2cphaT/" class="social-btn"><i class="fab fa-facebook"></i> HE Follow</a>
+            <a href="https://www.tiktok.com/@honey_owner_sajeeb?_r=1&_t=ZS-94DkRWonkGX" class="social-btn"><i class="fab fa-tiktok"></i> HE Follow</a>
+        </div>
+    </div>
+    
     <button class="thank-you-bar" onclick="celebrate()">THANK YOU</button>
-    <p style="margin-top:80px; opacity:0.3; font-size:10px;">© HONEY ENTERTAINMENT-Sajeeb saha</p>
+    
+    <p style="margin-top:80px; opacity:0.6; font-size:11px; letter-spacing: 2px; color: #fff; animation: fadeInTop 1.5s ease 0.9s both;">© Sajeeb-HE</p>
 </div>
 
 <script>
+    // Confetti Function
     function celebrate() {
-        var count = 500;
-        var defaults = { origin: { y: 0.6 }, zIndex: 1100 };
+        var count = 300;
+        var defaults = { origin: { y: 0.75 }, zIndex: 1100 };
         function fire(particleRatio, opts) {
-            confetti(Object.assign({}, defaults, opts, { particleCount: Math.floor(count * particleRatio) }));
+            confetti(Object.assign({}, defaults, opts, { 
+                particleCount: Math.floor(count * particleRatio),
+                colors: ['#ffffff', '#FFD700', '#DAA520', '#B8860B']
+            }));
         }
-        fire(0.25, { spread: 40, startVelocity: 70 });
+        fire(0.25, { spread: 40, startVelocity: 60 });
         fire(0.2, { spread: 80 });
-        fire(0.35, { spread: 140, decay: 0.91, scalar: 1.2 });
-        fire(0.1, { spread: 150, startVelocity: 40, decay: 0.92, scalar: 1.5 });
-        fire(0.1, { spread: 150, startVelocity: 60 });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 1.1 });
+        fire(0.1, { spread: 130, startVelocity: 30, decay: 0.92, scalar: 1.3 });
+        fire(0.1, { spread: 130, startVelocity: 50 });
     }
 
-    function createPujaItem() {
-        const item = document.createElement('div');
-        item.classList.add('puja-item');
-        const icons = ['🔱','🎯','Sajeeb']; 
-        item.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-        item.style.left = Math.random() * 100 + 'vw';
-        item.style.animationDuration = Math.random() * 3 + 5 + 's';
-        item.style.opacity = Math.random() * 0.5 + 0.3;
-        item.style.fontSize = Math.random() * 20 + 20 + 'px';
-        document.body.appendChild(item);
-        setTimeout(() => item.remove(), 8000);
+    // Floating Particles logic for mobile feel
+    const particleContainer = document.getElementById('particles');
+    for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.style.position = 'absolute';
+        p.style.width = Math.random() * 3 + 'px';
+        p.style.height = p.style.width;
+        p.style.background = 'white';
+        p.style.borderRadius = '50%';
+        p.style.opacity = Math.random() * 0.5;
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = Math.random() * 100 + '%';
+        
+        const duration = 10 + Math.random() * 20;
+        p.animate([
+            { transform: 'translateY(0) translateX(0)', opacity: 0 },
+            { transform: `translateY(-${100 + Math.random() * 200}px) translateX(${(Math.random() - 0.5) * 50}px)`, opacity: 0.5 },
+            { transform: `translateY(-${300 + Math.random() * 400}px) translateX(${(Math.random() - 0.5) * 100}px)`, opacity: 0 }
+        ], {
+            duration: duration * 1000,
+            iterations: Infinity,
+            easing: 'linear'
+        });
+        particleContainer.appendChild(p);
     }
-    setInterval(createPujaItem, 500);
 </script>
 
 </body>
-
 </html>
-

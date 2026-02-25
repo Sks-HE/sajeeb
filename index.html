@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sajeeb Saha Official</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Great+Vibes&family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Great+Vibes&family=Montserrat:wght@400;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/dist/confetti.browser.min.js"></script>
     <style>
         :root { 
             --gold: #FFD700; 
@@ -27,15 +27,17 @@
             touch-action: manipulation;
         }
 
-        /* Hero Image - Zoom Animation */
+        /* Hero Image - Zoom Animation with Endless Gradient Effect */
         .hero-image-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 60vh;
+            height: 75vh; /* Increased height for better blending */
             z-index: -3;
             overflow: hidden;
+            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
         }
 
         .hero-image-container img {
@@ -56,11 +58,11 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 101%;
+            height: 100%;
             background: linear-gradient(to bottom, 
                 rgba(0,0,0,0) 0%, 
-                rgba(0,0,0,0.05) 50%, 
-                var(--premium-black) 98%
+                rgba(0,0,0,0.2) 40%, 
+                var(--premium-black) 95%
             );
         }
 
@@ -160,8 +162,84 @@
             overflow: hidden;
         }
 
-        .social-btn:active {
-            transform: scale(0.9);
+        /* HE Website Button Section Styles */
+        .he-website-section {
+            margin-top: 35px;
+            animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+        }
+
+        .he-label {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: var(--pure-white);
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .he-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 6px 16px; 
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            width: fit-content;
+            margin: 0 auto;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: hePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes hePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 255, 255, 0.05); }
+            50% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
+        }
+
+        .he-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--pure-white);
+            animation-play-state: paused;
+        }
+
+        .he-logo-wrapper {
+            width: 42px; 
+            height: 42px; 
+            overflow: hidden;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid var(--pure-white);
+            background: #000;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .he-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transform: scale(1.4);
+        }
+
+        .he-text {
+            font-family: 'Cinzel Decorative', cursive;
+            font-weight: 900;
+            font-size: 20px; 
+            letter-spacing: 3px;
+            color: var(--pure-white);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .social-btn:active, .he-btn:active {
+            transform: scale(0.92);
         }
 
         .social-btn:hover { 
@@ -197,7 +275,6 @@
             transform: scale(0.95); 
         }
 
-        /* Particle effect for background */
         #particles {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -210,6 +287,7 @@
 
 <div id="particles"></div>
 
+<!-- Background Image with Fade Out Effect -->
 <div class="hero-image-container">
     <img src="https://i.pinimg.com/736x/4d/b4/c4/4db4c4778f38850b8a0740954155ddcf.jpg" alt="Sajeeb Saha Background">
     <div class="hero-overlay"></div>
@@ -230,6 +308,16 @@
             <a href="https://www.facebook.com/share/1CEQ2cphaT/" class="social-btn"><i class="fab fa-facebook"></i> HE Follow</a>
             <a href="https://www.tiktok.com/@honey_owner_sajeeb?_r=1&_t=ZS-94DkRWonkGX" class="social-btn"><i class="fab fa-tiktok"></i> HE Follow</a>
         </div>
+
+        <div class="he-website-section">
+            <div class="he-label">Visit HE's Website Now</div>
+            <a href="https://sks-he.github.io/Honey-Entertainment/" class="he-btn" target="_blank">
+                <div class="he-logo-wrapper">
+                    <img src="https://i.pinimg.com/736x/96/5f/f8/965ff82713b7a1ef6e3ffb782fcdc412.jpg" alt="HE Logo" class="he-logo">
+                </div>
+                <span class="he-text">HE</span>
+            </a>
+        </div>
     </div>
     
     <button class="thank-you-bar" onclick="celebrate()">THANK YOU</button>
@@ -238,7 +326,6 @@
 </div>
 
 <script>
-    // Confetti Function
     function celebrate() {
         var count = 300;
         var defaults = { origin: { y: 0.75 }, zIndex: 1100 };
@@ -255,7 +342,6 @@
         fire(0.1, { spread: 130, startVelocity: 50 });
     }
 
-    // Floating Particles logic for mobile feel
     const particleContainer = document.getElementById('particles');
     for (let i = 0; i < 20; i++) {
         const p = document.createElement('div');

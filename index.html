@@ -6,7 +6,7 @@
     <title>Sajeeb Saha Official</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Great+Vibes&family=Montserrat:wght@400;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root { 
             --gold: #FFD700; 
@@ -33,7 +33,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 75vh; /* Increased height for better blending */
+            height: 75vh; 
             z-index: -3;
             overflow: hidden;
             mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
@@ -136,8 +136,9 @@
             50% { transform: translateY(-10px); }
         }
 
+        /* Adjusted Content Group to move everything lower */
         .content-group {
-            margin-top: 100px;
+            margin-top: 180px; 
             animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
         }
 
@@ -162,7 +163,6 @@
             overflow: hidden;
         }
 
-        /* HE Website Button Section Styles */
         .he-website-section {
             margin-top: 35px;
             animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
@@ -287,7 +287,6 @@
 
 <div id="particles"></div>
 
-<!-- Background Image with Fade Out Effect -->
 <div class="hero-image-container">
     <img src="https://i.pinimg.com/736x/4d/b4/c4/4db4c4778f38850b8a0740954155ddcf.jpg" alt="Sajeeb Saha Background">
     <div class="hero-overlay"></div>
@@ -327,19 +326,33 @@
 
 <script>
     function celebrate() {
-        var count = 300;
-        var defaults = { origin: { y: 0.75 }, zIndex: 1100 };
+        // Check if confetti is loaded
+        if (typeof confetti !== 'function') {
+            console.error('Confetti library not loaded yet');
+            return;
+        }
+
+        var count = 250;
+        var defaults = { 
+            origin: { y: 1.0 }, 
+            zIndex: 1100 
+        };
+
         function fire(particleRatio, opts) {
             confetti(Object.assign({}, defaults, opts, { 
                 particleCount: Math.floor(count * particleRatio),
-                colors: ['#ffffff', '#FFD700', '#DAA520', '#B8860B']
+                colors: ['#ffffff', '#FFD700', '#DAA520', '#B8860B', '#ff00ff'], 
+                spread: 70, 
+                startVelocity: 65, 
+                gravity: 0.8, 
+                scalar: 1.2 
             }));
         }
-        fire(0.25, { spread: 40, startVelocity: 60 });
-        fire(0.2, { spread: 80 });
-        fire(0.35, { spread: 100, decay: 0.91, scalar: 1.1 });
-        fire(0.1, { spread: 130, startVelocity: 30, decay: 0.92, scalar: 1.3 });
-        fire(0.1, { spread: 130, startVelocity: 50 });
+
+        fire(0.25, { spread: 60, angle: 60 });
+        fire(0.25, { spread: 60, angle: 120 });
+        fire(0.3, { spread: 100, angle: 90 });
+        fire(0.2, { spread: 120, angle: 90, startVelocity: 45 });
     }
 
     const particleContainer = document.getElementById('particles');

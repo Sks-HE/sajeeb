@@ -9,13 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root { 
-            --gold: #FFD700; 
+            /* Golden intensity reduced to a softer, more subtle tone */
+            --gold: #C5A059; 
+            --bright-gold: #E5D1A2;
             --pink: #ff00ff; 
-            --dark-gold: #b8860b; 
+            --dark-gold: #917545; 
             --premium-black: #050505;
             --pure-white: #ffffff;
-            --soft-white: rgba(255, 255, 255, 0.9);
+            --soft-white: rgba(255, 255, 255, 0.95);
             --crystal: rgba(255, 255, 255, 0.15);
+            /* Reduced glow opacity */
+            --glow-color: rgba(197, 160, 89, 0.15); 
+            --deep-gold: #63502D;
+            --accent-shine: rgba(255, 255, 255, 0.2);
         }
         
         body { 
@@ -27,7 +33,7 @@
             touch-action: manipulation;
         }
 
-        /* Hero Image - Zoom Animation with Endless Gradient Effect */
+        /* Hero Image */
         .hero-image-container {
             position: fixed;
             top: 0;
@@ -44,13 +50,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 1;
-            animation: zoomInOut 20s ease-in-out infinite;
+            opacity: 0.88; 
+            animation: cinematicZoom 25s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            filter: contrast(110%) brightness(75%) saturate(100%) sepia(5%);
         }
 
-        @keyframes zoomInOut {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
+        @keyframes cinematicZoom {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.12) rotate(0.5deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
         .hero-overlay {
@@ -61,40 +69,39 @@
             height: 100%;
             background: linear-gradient(to bottom, 
                 rgba(0,0,0,0) 0%, 
-                rgba(0,0,0,0.2) 40%, 
-                var(--premium-black) 95%
+                rgba(0,0,0,0.3) 40%, 
+                var(--premium-black) 98%
             );
         }
 
-        /* Floating Particles / Background Glow */
         .animated-bg { 
             position: fixed; 
             top: 0; left: 0; 
             width: 100%; height: 100%; 
-            background: radial-gradient(circle at center, rgba(26, 26, 46, 0.4) 0%, #000 100%); 
+            background: radial-gradient(circle at 50% 50%, rgba(40, 35, 20, 0.2) 0%, #000 100%); 
             z-index: -2; 
         }
         
         .white-glow { 
             position: fixed; 
-            bottom: -50px; 
+            bottom: -100px; 
             left: 0; 
             width: 100%; 
-            height: 400px; 
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%); 
-            filter: blur(80px); 
+            height: 600px; 
+            background: radial-gradient(circle, var(--glow-color) 0%, transparent 75%); 
+            filter: blur(130px); 
             z-index: -1; 
             pointer-events: none;
-            animation: pulseGlow 8s ease-in-out infinite;
+            animation: pulseGlow 10s ease-in-out infinite;
         }
 
         @keyframes pulseGlow {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
+            0%, 100% { opacity: 0.3; transform: scale(1) translateY(0); }
+            50% { opacity: 0.5; transform: scale(1.2) translateY(-20px); }
         }
 
         .container { 
-            padding: 100px 20px 60px; 
+            padding: 110px 20px 60px; 
             max-width: 500px; 
             margin: auto; 
             text-align: center; 
@@ -102,178 +109,242 @@
             z-index: 10;
         }
         
-        /* Entrance Animations */
         .fade-in {
-            animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+            animation: fadeInTop 1.5s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
         @keyframes fadeInTop {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .profile-link {
             text-decoration: none;
             display: inline-block;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .profile-name { 
             font-family: 'Cinzel Decorative', cursive; 
-            font-size: 38px; 
+            font-size: 50px; 
             font-weight: 900; 
-            background: linear-gradient(to bottom, #ffffff 10%, #f7f7f7 30%, var(--gold) 60%, var(--dark-gold) 90%); 
+            background: linear-gradient(135deg, 
+                #ffffff 0%, 
+                #f2eedf 15%, 
+                var(--gold) 35%, 
+                var(--dark-gold) 50%, 
+                var(--deep-gold) 70%,
+                var(--gold) 85%,
+                #ffffff 100%
+            ); 
+            background-size: 200% auto;
             -webkit-background-clip: text; 
             -webkit-text-fill-color: transparent; 
-            text-shadow: 0 10px 35px rgba(255, 255, 255, 0.25); 
-            margin-bottom: 20px; 
-            letter-spacing: 2px;
-            animation: floating 3s ease-in-out infinite;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+            margin-bottom: 25px; 
+            letter-spacing: 5px;
+            animation: floating 4s ease-in-out infinite, textShine 5s linear infinite;
+        }
+
+        @keyframes textShine {
+            to { background-position: 200% center; }
         }
 
         @keyframes floating {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(1deg); }
         }
 
-        /* Adjusted Content Group to move everything lower */
         .content-group {
-            margin-top: 180px; 
-            animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s both;
+            margin-top: 190px; 
+            animation: fadeInTop 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
         }
 
         .social-container {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 25px;
+            margin-top: 30px;
         }
 
         .social-btn { 
             display: flex; align-items: center; justify-content: center; gap: 10px; 
-            padding: 15px 10px; border-radius: 22px; 
+            padding: 16px 12px; border-radius: 24px; 
             text-decoration: none; color: white; font-weight: bold; 
-            background: rgba(255,255,255,0.07); 
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(255, 255, 255, 0.3); 
-            transition: 0.4s; 
-            width: 35%; 
+            background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)); 
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            width: 40%; 
             font-size: 13px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .social-btn:hover { 
+            transform: translateY(-8px); 
+            border-color: var(--gold); 
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .fa-facebook {
+            background: linear-gradient(180deg, #18acff, #1877f2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(24, 119, 242, 0.6));
+            font-size: 1.2em;
+            transition: 0.3s;
+        }
+        
+        .social-btn:hover .fa-facebook {
+            filter: drop-shadow(0 0 15px rgba(24, 119, 242, 0.9));
+            transform: scale(1.1);
+        }
+
+        .fa-tiktok {
+            color: #fff;
+            filter: drop-shadow(2px 0 0 #ff0050) drop-shadow(-2px 0 0 #00f2ea);
+            font-size: 1.2em;
+            transition: 0.3s;
+        }
+
+        .social-btn:hover .fa-tiktok {
+            filter: drop-shadow(3px 0 5px #ff0050) drop-shadow(-3px 0 5px #00f2ea);
+            transform: scale(1.1);
         }
 
         .he-website-section {
-            margin-top: 35px;
-            animation: fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both;
+            margin-top: 45px;
+            animation: fadeInTop 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
         }
 
         .he-label {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 14px;
-            letter-spacing: 1px;
-            color: var(--pure-white);
-            margin-bottom: 12px;
+            font-size: 15px;
+            letter-spacing: 2.5px;
+            color: var(--soft-white);
+            margin-bottom: 20px;
             font-weight: 700;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            text-shadow: 0 4px 12px rgba(0,0,0,0.7);
         }
 
         .he-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 6px 16px; 
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
-            border-radius: 12px;
+            gap: 14px;
+            padding: 12px 28px; 
+            background: transparent;
+            border: none;
             text-decoration: none;
             color: white;
             width: fit-content;
             margin: 0 auto;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: hePulse 3s ease-in-out infinite;
+            transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            animation: hePulsePremium 4s ease-in-out infinite;
         }
 
-        @keyframes hePulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 0 10px rgba(255, 255, 255, 0.05); }
-            50% { transform: scale(1.03); box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
-        }
-
-        .he-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: var(--pure-white);
-            animation-play-state: paused;
+        @keyframes hePulsePremium {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
 
         .he-logo-wrapper {
-            width: 42px; 
-            height: 42px; 
+            width: 50px; 
+            height: 50px; 
             overflow: hidden;
-            border-radius: 8px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1.5px solid var(--pure-white);
-            background: #000;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+            border: none;
+            background: transparent;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: 0.4s;
         }
 
         .he-logo {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center;
             transform: scale(1.4);
+            filter: contrast(110%) brightness(1);
         }
 
         .he-text {
             font-family: 'Cinzel Decorative', cursive;
             font-weight: 900;
-            font-size: 20px; 
-            letter-spacing: 3px;
-            color: var(--pure-white);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+            font-size: 26px; 
+            letter-spacing: 6px;
+            background: linear-gradient(to bottom, #ffffff 20%, #e5d1a2 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6));
         }
 
-        .social-btn:active, .he-btn:active {
-            transform: scale(0.92);
-        }
-
-        .social-btn:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); 
-            border-color: #ffffff; 
-            background: rgba(255, 255, 255, 0.15);
-        }
-
+        /* --- UPDATED PREMIUM THANK YOU BAR --- */
         .thank-you-bar { 
+            position: relative;
             font-family: 'Montserrat', sans-serif; 
-            background: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C); 
-            background-size: 230% auto;
-            animation: shine 3s linear infinite, fadeInTop 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s both;
-            padding: 9px; border-radius: 99px; 
-            cursor: pointer; margin: 90px auto 0; 
-            font-weight: 800; font-size: 18px; 
-            width: 60%;
-            color: #222; 
-            box-shadow: 0 8px 25px rgba(184, 134, 11, 0.4);
-            transition: 0.4s;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(197, 160, 89, 0.3);
+            padding: 14px 40px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            margin: 100px auto 0; 
+            font-weight: 800; 
+            font-size: 14px; 
+            width: fit-content;
+            min-width: 180px;
+            color: var(--bright-gold); 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             display: block;
-            border: none;
-            outline: none;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            overflow: hidden;
             -webkit-tap-highlight-color: transparent;
+            animation: fadeInTop 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
         }
 
-        @keyframes shine {
-            to { background-position: 200% center; }
+        /* Continuous Shimmer Effect */
+        .thank-you-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+            animation: shimmer 3s infinite linear;
         }
 
-        .thank-you-bar:active { 
-            transform: scale(0.95); 
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
+
+        .thank-you-bar:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: rgba(197, 160, 89, 0.15);
+            border-color: var(--gold);
+            color: #fff;
+            box-shadow: 0 20px 40px rgba(197, 160, 89, 0.2);
+        }
+
+        .thank-you-bar:active {
+            transform: scale(0.95);
+        }
+        /* ---------------------------------- */
 
         #particles {
             position: fixed;
@@ -301,7 +372,7 @@
     </a>
     
     <div class="content-group">
-        <h2 style="font-family: 'Cinzel Decorative'; color: var(--pure-white); margin-top: 0; font-size: 10px; letter-spacing: 5px; opacity: 0.9;">POWERED BY SAJEEB SAHA</h2>
+        <h2 style="font-family: 'Cinzel Decorative'; color: var(--gold); margin-top: 0; font-size: 12px; letter-spacing: 7px; opacity: 1; font-weight: 900; text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); text-transform: uppercase;">POWERED BY SAJEEB SAHA</h2>
         
         <div class="social-container">
             <a href="https://www.facebook.com/share/1CEQ2cphaT/" class="social-btn"><i class="fab fa-facebook"></i> HE Follow</a>
@@ -319,64 +390,51 @@
         </div>
     </div>
     
+    <!-- Updated Premium Button -->
     <button class="thank-you-bar" onclick="celebrate()">THANK YOU</button>
     
-    <p style="margin-top:80px; opacity:0.6; font-size:11px; letter-spacing: 2px; color: #fff; animation: fadeInTop 1.5s ease 0.9s both;">© Sajeeb-HE</p>
+    <p style="margin-top:90px; opacity:0.7; font-size:11px; letter-spacing: 4px; color: #fff; animation: fadeInTop 1.5s ease 1s both; font-weight: 400; text-shadow: 0 0 8px rgba(0,0,0,0.5);">© SAJEEB-HE</p>
 </div>
 
 <script>
     function celebrate() {
-        // Check if confetti is loaded
-        if (typeof confetti !== 'function') {
-            console.error('Confetti library not loaded yet');
-            return;
-        }
-
-        var count = 250;
-        var defaults = { 
-            origin: { y: 1.0 }, 
-            zIndex: 1100 
-        };
-
+        if (typeof confetti !== 'function') return;
+        var count = 300;
+        var defaults = { origin: { y: 0.85 }, zIndex: 1100 };
         function fire(particleRatio, opts) {
             confetti(Object.assign({}, defaults, opts, { 
                 particleCount: Math.floor(count * particleRatio),
-                colors: ['#ffffff', '#FFD700', '#DAA520', '#B8860B', '#ff00ff'], 
-                spread: 70, 
-                startVelocity: 65, 
-                gravity: 0.8, 
-                scalar: 1.2 
+                colors: ['#ffffff', '#C5A059', '#E5D1A2', '#917545', '#FFFACD'],
+                spread: 90, 
+                startVelocity: 70, 
+                gravity: 0.9, 
+                scalar: 1.3 
             }));
         }
-
-        fire(0.25, { spread: 60, angle: 60 });
-        fire(0.25, { spread: 60, angle: 120 });
-        fire(0.3, { spread: 100, angle: 90 });
-        fire(0.2, { spread: 120, angle: 90, startVelocity: 45 });
+        fire(0.25, { spread: 70, angle: 60 });
+        fire(0.2, { spread: 70, angle: 120 });
+        fire(0.35, { spread: 120, angle: 90 });
+        fire(0.1, { spread: 140, angle: 90, startVelocity: 45 });
+        fire(0.1, { spread: 140, angle: 90, startVelocity: 55 });
     }
 
     const particleContainer = document.getElementById('particles');
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 40; i++) {
         const p = document.createElement('div');
         p.style.position = 'absolute';
-        p.style.width = Math.random() * 3 + 'px';
+        p.style.width = Math.random() * 2 + 1 + 'px';
         p.style.height = p.style.width;
         p.style.background = 'white';
         p.style.borderRadius = '50%';
         p.style.opacity = Math.random() * 0.5;
         p.style.left = Math.random() * 100 + '%';
         p.style.top = Math.random() * 100 + '%';
-        
-        const duration = 10 + Math.random() * 20;
+        const duration = 15 + Math.random() * 20;
         p.animate([
             { transform: 'translateY(0) translateX(0)', opacity: 0 },
-            { transform: `translateY(-${100 + Math.random() * 200}px) translateX(${(Math.random() - 0.5) * 50}px)`, opacity: 0.5 },
-            { transform: `translateY(-${300 + Math.random() * 400}px) translateX(${(Math.random() - 0.5) * 100}px)`, opacity: 0 }
-        ], {
-            duration: duration * 1000,
-            iterations: Infinity,
-            easing: 'linear'
-        });
+            { transform: `translateY(-${300 + Math.random() * 300}px) translateX(${(Math.random() - 0.5) * 100}px)`, opacity: 0.6 },
+            { transform: `translateY(-${600 + Math.random() * 500}px) translateX(${(Math.random() - 0.5) * 200}px)`, opacity: 0 }
+        ], { duration: duration * 1000, iterations: Infinity, easing: 'ease-out' });
         particleContainer.appendChild(p);
     }
 </script>
